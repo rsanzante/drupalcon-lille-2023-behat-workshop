@@ -1,0 +1,210 @@
+/******************************/
+/* Layer and general settings */
+/******************************/
+
+/* Fonts */
+/**********/
+
+/* Set main font*/
+body .reveal {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 39px;
+}
+
+.main-title img {
+  margin: 0px;
+}
+
+.main-title .title {
+  color: #2a6b8b;
+  font-size: 1.8em;
+}
+
+.main-title .author {
+  font-size: 0.9em;
+}
+
+/* Other sizes */
+.chapter .title {
+  font-size: 2em;
+}
+
+.reveal section .small {
+  font-size: 0.8em;
+}
+
+.reveal section .xsmall {
+  font-size: 0.6em;
+}
+
+.reveal section .xxsmall {
+  font-size: 0.4em;
+}
+
+.reveal section .header {
+  color: #2a6b8b;
+  /* color: #009cde; */
+  font-size: 1.5em;
+}
+
+
+.chapter-cover {
+  color: #2a6b8b;
+}
+
+.chapter-cover .title {
+  font-size: 1.8em;
+
+}
+
+
+/* Layout */
+.column {
+  width: 50%;
+
+}
+
+.spacer {
+  height: 50px;
+}
+
+.spacer-x {
+  height: 25px;
+}
+
+section .content {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.r-vstack {
+  margin-left: 0.5em;
+}
+
+
+/* Images */
+img.diagram {
+  background-color: rgb(245 245 245 / 0.75) !important;
+  border: 1px solid #666;
+}
+
+
+/* Lists */
+.reveal section .r-hstack ul {
+  margin-left: 2em;
+}
+
+li {
+  list-style-image: url("../images/drupal_bullet2.png");
+  padding: 0.5em 0px 0px 8px;
+  line-height: 1em;
+}
+
+li li {
+  list-style-type: square;
+  list-style-image: none;
+}
+
+li.nextlist {
+  margin-top: 1em;
+}
+
+/* Code */
+section .code  {
+  font-family: monospace;
+}
+
+
+
+
+
+/*********************/
+/* Specific elements */
+/*********************/
+
+/* .line {
+
+  width: 20%;
+  height: 2px;
+  border: 1px solid #fff;
+  background-color: #fff;
+  margin: auto;
+  display: block;
+  position: relative;
+  top: 6em;
+} */
+
+
+/* Drupal Con logo */
+/*******************/
+.event-logo-container {
+  position: absolute;
+  top: 1em;
+  left: 1em;
+  z-index: 10;
+  transition: all .8s cubic-bezier(.26, .86, .44, .985);
+}
+
+.event-logo-container.right {
+  top: 1em;
+  right: 1.5em;
+  left: auto;
+}
+
+img.dcon2022-logo {
+  max-width: 160px;
+}
+
+.right {
+  float: right;
+}
+
+img.drupalaustria-logo {
+  max-width: 260px;
+}
+
+.chapter .event-logo-container {
+  opacity: 0;
+}
+
+.no-logo .event-logo-container {
+  display: none;
+}
+
+/* Title slide TODO */
+/* .main-title .backgrounds { */
+/* height: 98%; */
+/* } */
+/*
+.main-title .content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 25%;
+}
+
+.main-title .content span {
+  width: 40%;
+  font-weight: 200;
+  font-size: 1.5em;
+}
+ */
+
+
+/** Chapter slides */
+
+
+
+/* Who I am section */
+.reveal section img.profile-photo {
+  max-width: 150px;
+  border-radius: 50%;
+  border: 7px solid #512c15;
+}
+
+.reveal section img.metadrop-logo {
+  max-width: 250px;
+}

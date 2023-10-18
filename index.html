@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
+
+    <title>Behavior Driven Development: Behat and Drupal for acceptance tests</title>
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/white.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/custom-new.css">
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css">
+  </head>
+
+  <body>
+    <header>
+      <div class="logo">
+        <a href="/">
+          <img
+            src="./assets/images/event-logo.png"
+            alt="Event logo"
+          >
+        </a>
+      </div>
+    </header>
+
+    <div class="reveal">
+      <div class="slides">
+        <section
+          data-state="cover"
+          data-background-image="./assets/images/light_background.jpg"
+          style="text-align: left;"
+        >
+          <div class="content">
+            <img class="cover-logo" src="./assets/images/dc_lille_logo.png">
+            <div class="panel title">
+              <h2 class="xlarge">Behavior Driven Development</h2>
+              <h1 class="xxlarge">Behat and Drupal <br>for<br>acceptance tests</h1>
+            </div>
+          </div>
+        </section>
+
+        <section data-state="authors"
+          data-background-image="./assets/images/light_background.jpg"
+        >
+          <div class="ice-breaking">
+            <article class="panel">
+              <img
+                src="./assets/images/sanzante.jpg"
+                width="100px"
+                height="100px"
+                alt="Ricardo Sanz"
+              >
+              <h2>Ricardo Sanz</h2>
+              <h3>Drupal Developer and DevOps</h3>
+              <h4>Free software and weird music</h4>
+              <a
+                href="https://drupal.org/u/tunic"
+                target="_blank"
+              >
+                drupal.org/u/tunic
+              </a>
+            </article>
+          </div>
+          <br>
+          <a
+            href="https://metadrop.net"
+            target="_blank"
+          >
+            <img
+              src="./assets/images/metadrop-logo.svg"
+              width="350"
+            >
+          </a>
+        </section>
+
+        <section
+          data-state="chapter"
+          data-auto-animate
+        >
+          <h1>Index</h1>
+        </section>
+
+        <section
+          data-state="content"
+          data-auto-animate
+        >
+          <h1>Index</h1>
+          <ol class="small">
+            <li class="fragment fade-in">Workshop requisites</li>
+            <li class="fragment fade-in">Behat introduction</li>
+            <li class="fragment fade-in">Exercises</li>
+          </ol>
+        </section>
+
+        <section
+          data-state="chapter"
+          data-auto-animate
+        >
+          <h1>Workshop requisites</h1>
+        </section>
+
+        <section
+          data-state="content"
+          data-auto-animate
+        >
+          <h1>Workshop requisites</h1>
+          <ol>
+            <li>Git</li>
+            <li>Composer</li>
+            <li>Make</li>
+            <li>Docker</li>
+            <li>Docker compose (v1)</li>
+          </ol>
+        </section>
+
+
+        <section>
+          <h1>Environment setup</h1>
+          <ul>
+            <li>
+              Clone repository
+              <pre>
+                <code>
+  git clone git@github.com:rsanzante/drupalcampspain2023-behat-workshop.git
+                </code>
+              </pre>
+            </li>
+            <li>
+              Install packages
+              <pre>
+                <code>
+  composer install
+                </code>
+              </pre>
+            </li>
+            <li>
+              Run assistant
+              <pre>
+                <code>
+  composer boilerplate:assistant
+                </code>
+              </pre>
+              Keep default values except for the profile to install (<strong>specify the <em>Umami</em> profile</strong>) and <strong>do not create a subtheme</strong>
+
+            </li>
+          </ul>
+        </section>
+
+        <section
+          data-state="chapter"
+          data-auto-animate
+        >
+          <h1>Behat Introduction</h1>
+        </section>
+
+        <section
+          data-state="content"
+          data-auto-animate
+        >
+          <h1>Behat Introduction</h1>
+          <ul>
+            <li>
+              BDD framework (Behavior Driven Development)
+            </li>
+            <li>
+              Describe a behavior that is automatically tested
+            </li>
+            <li>Acceptance tests</li>
+            <li>Natural language</li>
+          </ul>
+        </section>
+
+        <section data-state="content">
+          <h1>What does <em>describe</em> mean?</h1>
+          <ul>
+            <li>User Stories</li>
+            <li>
+              Functionality from user perspective
+            </li>
+            <li>Written using Gherkin language</li>
+          </ul>
+        </section>
+
+        <section data-state="content">
+          <h1>User Story example</h1>
+          <img
+            src="./assets/images/feature_outline.png"
+            alt="Event logo"
+          >
+        </section>
+
+        <section data-state="content">
+          <h1>Gherkin</h1>
+          <ul>
+            <li>
+              Language to write User Stories
+            </li>
+            <li>
+              Organize using <code>.feature</code> files
+            </li>
+            <li>Each feature is functionality</li>
+            <li>
+              Functionalities are described/tested using scenarios
+            </li>
+            <li>
+              Each scenario is composed by steps
+            </li>
+            <li>
+              The first word of a step (Given, Then, And, When) is NOT relevant
+            </li>
+          </ul>
+        </section>
+
+        <section data-state="content">
+          <h1>
+            What does <em>automatically tested</em> mean?
+          </h1>
+          <ul>
+            <li>
+              Each step is mapped to actions
+            </li>
+            <li>Actions -> PHP functions</li>
+            <li>
+              Drivers
+              <ul>
+                <li>Goutte</li>
+                <li>Selenium2</li>
+                <li>Drupal API</li>
+                <li>…</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section data-state="content">
+          <h1>Behat Extension</h1>
+          <ul>
+            <li>Drupal module that extends Behat</li>
+            <li>
+              Provides Drupal steps
+              <ul>
+                <li>Access as a user, role, etc</li>
+                <li>Creation of content, users, etc</li>
+                <li>Status message detection</li>
+                <li>…</li>
+              </ul>
+            </li>
+            <li>
+              Support for Drupal concepts
+              <ul>
+                <li>Region detection</li>
+                <li>Login detection</li>
+                <li>…</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section data-state="content">
+          <h1>Behat Contexts</h1>
+          <ul>
+            <li>Standard way to extend Behat</li>
+            <li>Typical use: adding new steps</li>
+            <li>
+              Examples
+              <ul>
+                <li>Drupal messages</li>
+                <li>Batch API</li>
+                <li>Debugging</li>
+                <li>Forms</li>
+                <li>…</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section
+          data-state="chapter"
+          data-auto-animate
+        >
+          <h1>Exercises</h1>
+        </section>
+
+        <section
+          data-state="content"
+          data-auto-animate
+        >
+          <h1>Exercises</h1>
+          <ul>
+            <li class="fragment fade-in">Initial setup</li>
+            <li class="fragment fade-in">New project</li>
+            <li class="fragment fade-in">Writing acceptance tests</li>
+          </ul>
+        </section>
+
+        <section
+          data-state="chapter"
+          data-auto-animate>
+          <h1>Initial setup</h1>
+        </section>
+
+        <section
+          data-state="content"
+          data-auto-animate
+        >
+          <h1>Initial setup</h1>
+          <ul>
+            <li>
+              Behat can be hard to setup
+            </li>
+            <li>
+              We'll use Metadrop's Boilerplate
+            </li>
+            <li>
+              Containers: PHP + Apache + Selenium + Chrome + …
+            </li>
+            <li>Behat is preconfigured</li>
+          </ul>
+        </section>
+
+        <section>
+          <h1>Environment setup</h1>
+          <ul>
+            <li>
+              Clone repository
+              <pre>
+                <code>
+  git clone git@github.com:rsanzante/drupalcampspain2023-behat-workshop.git
+                </code>
+              </pre>
+            </li>
+            <li>
+              Install packages
+              <pre>
+                <code>
+  composer install
+                </code>
+              </pre>
+            </li>
+            <li>
+              Run assistant
+              <pre>
+                <code>
+  composer boilerplate:assistant
+                </code>
+              </pre>
+              Keep default values except for the profile to install (<strong>specify the <em>Umami</em> profile</strong>) and <strong>do not create a subtheme</strong>
+            </li>
+          </ul>
+        </section>
+
+
+
+        <section data-state="content">
+          <h1>Container commands</h1>
+          <ul>
+            <li>
+              Up:
+              <pre>make up</pre>
+            </li>
+            <li>
+              Stop
+              <pre>make stop</pre>
+            </li>
+            <li>
+              Remove
+              <pre>make prune</pre>
+            </li>
+            <li>
+              Shell in the PHP container
+              <pre>make shell</pre>
+            </li>
+          </ul>
+        </section>
+
+        <section data-state="content">
+          <h1>Behat commands</h1>
+          Inside the PHP container (
+          <code>make shell</code>
+          )
+          <ul>
+            <li>
+              Ejecutar tests:
+              <pre>behat</pre>
+            </li>
+            <li>
+              Show available steps:
+              <pre>behat -dl</pre>
+            </li>
+            <li>
+              Run tests of a given tag:
+              <pre>behat --tag=foo</pre>
+            </li>
+          </ul>
+        </section>
+
+        <section data-state="content">
+          <h1>Git</h1>
+          <img
+            src="./assets/images/git_screenshot.png"
+            alt="Git tags and commits"
+          >
+
+
+          <ul>
+            <li>
+              Use tags to go to each exercise and its solution.
+            </li>
+            <li>
+              Start at tag <code>us1-exercise</code>
+            </li>
+          </ul>
+
+        </section>
+
+        <section
+          data-state="chapter"
+          data-auto-animate
+        >
+          <h1>A new project</h1>
+        </section>
+
+        <section
+          data-state="content"
+          data-auto-animate
+        >
+          <h1>A new project</h1>
+          <div>
+            <em>
+              <span class="small">
+                "We have a project for a recipe website, where users can see what recipes are available and search for them. We would need to categorize them in some way, with tags or something similar.
+                <span class="small">
+                  It should also have other content related to recipes,
+                  <span class="small">
+                    which the SEO department insists is essential, something
+                    <span class="small">
+                      like articles or the like. There will be different people contributing recipes, so we want to be able to review what is published before users see it.
+                      <span class="small">
+                        Oh, and the content should display other related content, which is also necessary for SEO.
+                        <span class="small">
+                          What challenges do you foresee
+                          <span class="small">
+                            ? We would also need to have lists
+                            <span class="small">
+                              of recipes
+                              <span class="small">
+                                and articles.
+                                <span class="small">
+                                  Security is important, of course,
+                                  <span class="small">
+                                    as we cannot afford a
+                                    <em>defacement</em>
+                                    ; it would be detrimental to our image.
+                                    <span class="small">
+                                      <span class="small">
+                                        Above all, it should have a good
+                                        <span class="small">design…………</span>
+                                      </span>
+                                    </span>
+                                  </span>
+                                </span>
+                              </span>
+                            </span>
+                          </span>
+                        </span>
+                      </span>
+                    </span>
+                  </span>
+                </span>
+                "
+              </span>
+            </em>
+          </div>
+        </section>
+
+        <section data-state="content">
+          <h1>Write the specifications</h1>
+          <ul>
+            <li>
+              Site with two types of content: recipes and articles
+            </li>
+            <li>
+              Lists of recipes and articles by date
+            </li>
+            <li>Recipe search functionality</li>
+            <li>Editorial workflow</li>
+            <li>
+              Related articles on each article page
+            </li>
+            <li>Homepage with a bit of everything</li>
+            <li>…</li>
+          </ul>
+        </section>
+
+        <section
+          data-state="chapter"
+          data-auto-animate
+        >
+          <h1>Writing Acceptance Tests</h1>
+        </section>
+
+        <section
+          data-state="content"
+          data-auto-animate
+        >
+          <h1>Writing Acceptance Tests</h1>
+          <ul>
+            <li>
+              Add a <code>.feature</code> file
+            </li>
+            <li>
+              Where?
+              <code>tests/functional/behat/features/umami/</code>
+            </li>
+            <li>
+              Describe the User Story using scenarios with Gherkin language
+            </li>
+          </ul>
+        </section>
+
+
+
+
+        <section data-state="content">
+          <h1>User Story 1: View Recipe List</h1>
+          <div class="left">
+            The user should be able to view a list of recipes.
+            <br>
+            Suggested steps:
+          </div>
+          <ul class="left">
+            <li>
+              <code>Given I am anonymous user</code>
+            </li>
+            <li>
+              <code>Given I go to "&lt;path&gt;"</code>
+            </li>
+            <li>
+              <code>And I click  "&lt;text to click&gt;"</code>
+            </li>
+            <li>
+              <code>And I should see "&lt;text&gt;"</code>
+            </li>
+          </ul>
+          <br>
+          <br>
+          <div class="xsmall left">
+            <em>
+              File
+              <code>recipe_list.feature</code>
+            </em>
+          </div>
+
+        </section>
+
+        <section data-state="content">
+          <h1>
+            User Story 2: Access the Featured Recipe on the Homepage
+          </h1>
+          <div class="left">
+            The user should be able to view the featured recipe on the homepage and access it directly from the homepage.
+            <br>
+            Suggested steps:
+          </div>
+            <ul class="left">
+              <li>
+                <code>Given I am anonymous user</code>
+              </li>
+              <li>
+                <code>Given I go to "&lt;path&gt;"</code>
+              </li>
+              <li>
+                <code>And I click  "&lt;text to click&gt;"</code>
+              </li>
+              <li>
+                <code>And I should see "&lt;text&gt;"</code>
+              </li>
+            </ul>
+          <br>
+          <br>
+          <div class="xsmall left">
+            <em>
+              File
+              <code>featured_recipe.feature</code>
+            </em>
+          </div>
+        </section>
+
+        <section data-state="content">
+          <h1>User Story 3: Access Homepage Article</h1>
+          <div class="left">
+            The user should be able to see an article on the homepage and access it directly from the homepage.
+            <br>
+            Suggested steps:
+          </div>
+          <ul class="left">
+            <li>
+              <code>Given I am anonymous user</code>
+            </li>
+            <li>
+              <code>Given I go to "&lt;path&gt;"</code>
+            </li>
+            <li>
+              <code>And I click  "&lt;text to click&gt;"</code>
+            </li>
+            <li>
+              <code>And I should see "&lt;text&gt;"</code>
+            </li>
+          </ul>
+          <br>
+          <br>
+          <div class="xsmall left">
+            <em>
+              File
+              <code>home_page_article.feature</code>
+            </em>
+          </div>
+        </section>
+
+
+        <section data-state="content">
+          <h1>User Story 4: Access an Article</h1>
+          <div class="left">
+            The user should be able to view an article, including its tags, related articles, and
+            <em>breadcrumb</em>.
+            <br>
+            Suggested steps:
+          </div>
+          <ul class="left">
+            <li>
+              <code>Given I am anonymous user</code>
+            </li>
+            <li>
+              <code>Given I go to "&lt;path&gt;"</code>
+            </li>
+            <li>
+              <code>And I should see "&lt;text&gt;"</code>
+            </li>
+          </ul>
+          <br>
+          <br>
+          <div class="xsmall left">
+            <em>
+              File
+              <code>article_view.feature</code>
+            </em>
+          </div>
+        </section>
+
+        <section data-state="content">
+          <h1>Issues with User Story 4:</h1>
+          <ul>
+            <li>
+              The exact text of the
+              <em>breadcrumb</em>
+              is not clear or is already present on the page
+            </li>
+            <li>
+              How to test that the article itself does not appear in related articles?
+            </li>
+          </ul>
+        </section>
+
+        <section
+          data-state="content"
+          data-auto-animate
+        >
+          <h1>
+            Defining regions of the
+            <em>theme</em>
+          </h1>
+          <ul>
+            <li>
+              Declare regions using CSS selectors
+            </li>
+            <li>
+              Ssteps can use declared regions
+            </li>
+          </ul>
+          <br>
+          <br>
+          <div>
+            Edit behat.yml and add the following to the property <code>NuvoleWeb\Drupal\DrupalExtension</code>
+            :
+            <pre>
+region_map:
+  pre header: ".region-pre-header"
+  highlighted: ".region-highlighted"
+  header: ".region-header"
+  breadcrumb: ".region-breadcrumbs"
+  content: ".region-content"
+  content bottom: ".region-content-bottom"
+  tabs: ".region-tabs"
+  sidebar: ".region-sidebar"
+  bottom: ".region-bottom"
+  footer: "region-footer"
+              </pre>
+          </div>
+        </section>
+
+        <section data-state="content">
+          <h1>User Story 4B: Access an Article</h1>
+          <div class="left">
+            Same scenario as User Story 4 but using regions for the steps.
+            <br>
+            Suggested steps:
+          </div>
+          <ul class="left">
+            <li>
+              <code>Given I am anonymous user</code>
+            </li>
+            <li>
+              <code>Given I go to "&lt;path&gt;"</code>
+            </li>
+            <li>
+              <code>And I should see "&lt;text&gt;"</code>
+            </li>
+            <li>
+              <code>And I should not see "&lt;text&gt;"</code>
+            </li>
+          </ul>
+          <br>
+          <br>
+          <div class="xsmall left">
+            <em>
+              File
+              <code>article_view_improved.feature</code>
+            </em>
+          </div>
+        </section>
+
+        <section data-state="content">
+          <h1>Using the Drupal API</h1>
+          <ul>
+            <li>
+              Certain steps require making changes to the site
+            </li>
+            <li>
+              For example: creating a user, creating entities, running cron, etc
+            </li>
+            <li>
+              By adding the
+              <code>@api</code>
+              tag to a scenario, the Drupal API
+              <em>driver</em>
+              is used
+            </li>
+            <li>
+              You can execute PHP code in the context of bootstrapped Drupal
+            </li>
+          </ul>
+        </section>
+
+        <section data-state="content">
+          <h1>User Story 5: Access to Recipe Creation form</h1>
+          <div class="left">
+            Only
+            <code>author</code>
+            users should be able to access the recipe creation form.
+            <br>
+            Suggested steps:
+          </div>
+          <ul class="left">
+            <li>
+              <code>
+                Given I am logged in as a user with the &lt;rol&gt; role
+              </code>
+            </li>
+            <li>
+              <code>Given I go to "&lt;path&gt;"</code>
+            </li>
+            <li>
+              <code>And I should see "&lt;text&gt;"</code>
+            </li>
+            <li>
+              <code>And I should not see "&lt;text&gt;"</code>
+            </li>
+          </ul>
+          <div class="left">
+            You need to add
+            <code>@api</code>
+            to the scenario
+          </div>
+          <br>
+          <div class="xsmall left">
+            <em>
+              File
+              <code>recipe_edit_form_access.feature</code>
+            </em>
+          </div>
+        </section>
+
+        <section data-state="content">
+          <h1>Issues with User Story 5:</h1>
+          <ul>
+            <li>The tests are repetitive</li>
+            <li>Only some parameters change</li>
+            <li>How to reuse tests?</li>
+          </ul>
+        </section>
+
+        <section data-state="content">
+          <h1>Scenario Outline</h1>
+          <ul>
+            <li>Repetitive tests that only differ in some parameters</li>
+            <li>Solution: parametrizable scenarios using
+              <code>Scenario Outline</code>
+            </li>
+          </ul>
+          <pre>
+            <code
+              data-trim
+              data-noescape
+            >
+              Scenario Outline: An example
+                Given I enter the &lt;value&gt; value
+                 Then I should see &lt;value&gt;
+
+                 Examples:
+                 | value |
+                 | foo   |
+                 | bar   |
+            </code>
+          </pre>
+        </section>
+
+        <section data-state="content">
+          <h1>User Story 5B: Access to Recipe Creation</h1>
+          <div class="left">
+            Same scenario as User Story 5 but using
+            <code>Scenario Outline</code>
+          </div>
+          <br>
+          <div class="xsmall left">
+            <em>
+              File
+              <code>
+                recipe_edit_form_access_scenario_outline.feature
+              </code>
+            </em>
+          </div>
+        </section>
+
+        <section data-state="content">
+          <h1>Using a Complete Browser</h1>
+          <ul>
+            <li>
+              We have been using HTTP requests and process the result
+            </li>
+            <li>
+              By adding the
+              <code>@javascript</code>
+              tag to a scenario, a JavaScript-capable engine is used (for example, Chrome via Selenium2)
+            </li>
+            <li>
+              Required for certain interactions, like fields with CKEditor
+            </li>
+          </ul>
+        </section>
+
+        <section data-state="content">
+          <h1>User Story 6: Recipe Creation</h1>
+          <div class="left">
+            Create a recipe using the recipe form.
+            Suggested steps:
+          </div>
+          <ul class="left">
+            <li>
+              <code>
+                Then I fill in "&lt;field&gt;" with "&lt;value&gt;"
+              </code>
+            </li>
+            <li>
+              <code>And I select "&lt;value&gt;" from "&lt;select&gt;"</code>
+            </li>
+            <li>
+              <code>
+                And I scroll to "&lt;field&gt;" field
+              </code>
+            </li>
+            <li>
+              <code>And I fill in the rich text editor "Summary" with "This is a summary"</code>
+            </li>
+            <li>
+              <code>And I assign the media with name "nombre" to "id de field" field</code>
+            </li>
+          </ul>
+          <div class="left">
+            You need to add
+            <code>@api</code> and <code>@javascript</code>
+            to the scenario
+          </div>
+          <br>
+          <div class="xsmall left">
+            <em>
+              File
+              <code>recipe_create.feature</code>
+            </em>
+          </div>
+        </section>
+
+        <section data-state="content">
+          <h1>Creating Custom Steps</h1>
+          <ul>
+            <li>
+              Add specific steps for a project
+            </li>
+            <li>
+              Simplify repetitive actions through a step
+            </li>
+            <li>
+              Maintain the readability of the tests
+            </li>
+          </ul>
+        </section>
+
+
+        <section data-state="content">
+          <h1>FeatureContext</h1>
+          <ul>
+            <li>
+              Add a function with an annotation that associates it with a step
+              <pre>
+                <code>
+/**
+ * @When I do something with :argument
+ */
+public function iDoSomethingWith($argument) {
+  // do something with $argument
+}
+                </code>
+              </pre>
+            </li>
+            <li>
+              Interact with the browser using Mink
+            </li>
+            <li>
+              Execute Drupal code if <code>@api</code> is active in the scenario
+            </li>
+            <li>
+              Any action executable through PHP
+            </li>
+          </ul>
+        </section>
+
+
+        <section data-state="content">
+          <h1>User Story 7: Using a Custom Step</h1>
+          <div class="left">
+            Create and use a custom step that takes to the list of recipes<br><br>
+            Step: <code>When I go to the recipe list</code>
+          </div>
+          <ul class="left">
+            <li>
+              Edit the file <code>tests/functional/behat/bootstrap/FeatureContext.php</code>
+            </li>
+            <li>
+              Add a function with the custom step
+            </li>
+          </ul>
+          <br><br>
+          <div class="left">
+            Suggested code
+          </div>
+          <ul>
+            <li>
+              <code>
+                $this->visitPath('&lt;path&gt;');
+              </code>
+            </li>
+            <li>
+              <code>$session->getPage()->find('region', '&lt;region&gt;');</code>
+            </li>
+            <li>
+              <code>$region->findLink('&lt;enlace&gt;');</code>
+            </li>
+          </ul>
+          <br>
+          <br>
+          <div class="xsmall left">
+            <em>
+              File
+              <code>custom_step.feature</code>
+            </em>
+          </div>
+        </section>
+
+
+        <section
+          data-state="chapter"
+          data-auto-animate
+        >
+          <h1>References</h1>
+        </section>
+        <section
+          data-state="content"
+          data-auto-animate
+        >
+          <h1>References</h1>
+          <ul>
+            <li>
+              Behat <a href="https://behat.org/en/latest/index.html">Official documentation</a>
+            </li>
+            <li>
+              Nuvole's <a href="https://github.com/nuvoleweb/drupal-behat">Behat Contexts</a>
+            </li>
+            <li>
+              Metadrop's <a href="https://github.com/Metadrop/behat-contexts">Behat Contexts</a>
+            </li>
+            <li>
+              <a href="https://github.com/Metadrop/drupal-boilerplate">Drupal Boilerplate</a> with Docker and Behat preconfigured
+            </li>
+          </ul>
+        </section>
+
+
+        <section
+          data-state="content"
+        >
+          <h1 class="xxlarge" style="margin-bottom: 20%">Questions?</h1>
+
+        </section>
+
+        <section
+          data-state="content"
+        >
+          <h1 class="xxxlarge" style="margin-bottom: 20%">¡Gracias!</h1>
+        </section>
+
+
+        <section
+          data-state="end"
+          data-background-image="./assets/images/end01.png"
+          data-background-size="contain"
+          data-background-position="center"
+          data-background-color="#f8f7f3"
+        ></section>
+
+        <section
+          data-state="end"
+          data-background-image="./assets/images/end02.png"
+          data-background-size="contain"
+          data-background-position="center"
+          data-background-color="#f8f7f3"
+        ></section>
+
+        <section
+          data-state="end"
+          data-background-image="./assets/images/end03.png"
+          data-background-size="contain"
+          data-background-position="center"
+          data-background-color="#f8f7f3"
+        ></section>
+      </div>
+    </div>
+
+    <footer>
+      <br>
+    </footer>
+
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+      // More info about initialization & config:
+      // - https://revealjs.com/initialization/
+      // - https://revealjs.com/config/
+      Reveal.initialize({
+        hash: true,
+        showNotes: false,
+        slideNumber: false,
+        defaultTiming: 33,
+        transition: "slide",
+        highlight: {
+          highlightOnLoad: false,
+        },
+        backgroundTransition: "fade",
+
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+      });
+
+    // Set data-* values depending of the type of slide.
+		for (var slide of document.getElementsByTagName('section')) {
+
+      slideType = slide.getAttribute('data-state');
+      switch(slideType) {
+        case 'chapter':
+          slide.setAttribute("data-background-image", "./assets/images/colorfull_bg.jpg");
+          slide.setAttribute("data-background-size", "cover");
+          slide.setAttribute("data-background-position", "top");
+          break;
+
+        case 'content':
+          slide.setAttribute("data-state", "content");
+          slide.setAttribute("data-background-image", "./assets/images/light_background.jpg");
+          //slide.setAttribute("data-background-size", "contain");
+          slide.setAttribute("data-background-position", "bottom right");
+      }
+		}
+    </script>
+
+  </body>
+</html>
